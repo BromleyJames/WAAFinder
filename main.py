@@ -1,8 +1,9 @@
-from dotenv import load_dotenv
 import os
 from pathlib import Path
-import requests
 from zipfile import ZipFile
+
+import requests
+from dotenv import load_dotenv
 
 
 def check_unzipped(target_folder, gnaf_url):
