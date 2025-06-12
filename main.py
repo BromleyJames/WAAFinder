@@ -104,6 +104,9 @@ def main():
 
     check_unzipped(target_folder, gnaf_url)
 
+    authority_regex = "^Authority_Code_(?<table>.*?)_psv.psv$"
+    state_regex = "^[^_]*_(?<table>.*?)_psv.psv$"
+
 
 if __name__ == "__main__":
     main()

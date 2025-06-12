@@ -28,3 +28,4 @@ After this, you should be able to run
 ```
 uv run main.py
 ```
+A lot of the logic for unzipping files and building the database is hard-coded, based on the structure of the zip files.
