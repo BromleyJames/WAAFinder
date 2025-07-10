@@ -1,5 +1,4 @@
 import os
-import re
 import shutil
 import sqlite3
 from pathlib import Path
@@ -37,6 +36,7 @@ def run_ddl(file, cursor):
 def index_files(folder, regex):
     pass
 
+
 def load_data(cursor, file, table):
     pass
 
@@ -46,11 +46,11 @@ def main():
 
     gnaf_url = os.getenv("GNAF_URL")
     target_folder = os.getenv("TARGET_FOLDER")
-    database_type =  os.getenv("DATABASE")
+    database_type = os.getenv("DATABASE")
 
     conn = sqlite3.connect("gnaf.db")
     cursor = conn.cursor()
-    print(f"Connected to sqlite db")
+    print("Connected to sqlite db")
 
     local_folder = get_foldername(target_folder, gnaf_url)
 
@@ -59,14 +59,15 @@ def main():
 
         print("Creating tables...")
         create_tables_scripts = (
-            local_folder / "G-NAF/Extras/GNAF_TableCreation_Scripts/create_tables_sqlserver.sql"
+            local_folder
+            / "G-NAF/Extras/GNAF_TableCreation_Scripts/create_tables_sqlserver.sql"
         )
         run_ddl(create_tables_scripts, cursor)
 
-        
         print("Adding FK constraints...")
         create_fk_constraints = (
-            local_folder / "G-NAF/Extras/GNAF_TableCreation_Scripts/add_fk_constraints.sql"
+            local_folder
+            / "G-NAF/Extras/GNAF_TableCreation_Scripts/add_fk_constraints.sql"
         )
         run_ddl(create_fk_constraints, cursor)
 
@@ -75,12 +76,12 @@ def main():
             local_folder / "G-NAF/Extras/GNAF_View_Scripts/address_view.sql"
         )
         run_ddl(create_views_scripts, cursor)
-    
-    else:
 
+    else:
         print("Creating tables...")
         create_tables_scripts = (
-            local_folder / "G-NAF/Extras/GNAF_TableCreation_Scripts/create_tables_sqlserver.sql"
+            local_folder
+            / "G-NAF/Extras/GNAF_TableCreation_Scripts/create_tables_sqlserver.sql"
         )
         run_ddl(create_tables_scripts, cursor)
 
@@ -89,19 +90,21 @@ def main():
             local_folder / "G-NAF/Extras/GNAF_View_Scripts/address_view.sql"
         )
 
-        copy_suffix = 'ansi'
-        copy_path = create_views_scripts.with_stem(create_views_scripts.stem + copy_suffix)
+        copy_suffix = "ansi"
+        copy_path = create_views_scripts.with_stem(
+            create_views_scripts.stem + copy_suffix
+        )
 
         shutil.copy2(create_views_scripts, copy_path)
 
-        content = copy_path.read_text(encoding='utf-8')
+        content = copy_path.read_text(encoding="utf-8")
 
         print(f"File copied to: {copy_path}")
 
         # sqllite doesn't understand this syntax
         modified_content = content.replace("OR REPLACE", "")
 
-        copy_path.write_text(modified_content, encoding='utf-8')
+        copy_path.write_text(modified_content, encoding="utf-8")
 
         run_ddl(create_views_scripts, cursor)
 
