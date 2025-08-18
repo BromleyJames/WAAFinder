@@ -29,3 +29,9 @@ After this, you should be able to run
 uv run main.py
 ```
 A lot of the logic for unzipping files and building the database is hard-coded, based on the structure of the zip files.
+
+Once the data has been downloaded, you can load the data into a database, using makedb.py
+
+```
+uv run makedb.py
+```
