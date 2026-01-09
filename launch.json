@@ -1,0 +1,20 @@
+{
+    // VS Code launch configuration for debugging purposes
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug main.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Debug makedb.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/makedb.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
