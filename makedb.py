@@ -34,7 +34,9 @@ def run_ddl(file, cursor):
 
 
 def index_files(folder, regex):
-    pass
+    """Recursively iterates over a directory to index the files according to their name"""
+    print(f"Folder: {folder}")
+    print(f"Regex: {regex}")
 
 
 def load_data(cursor, file, table):
@@ -106,14 +108,22 @@ def main():
 
         copy_path.write_text(modified_content, encoding="utf-8")
 
-        run_ddl(create_views_scripts, cursor)
+        run_ddl(copy_path, cursor)
+
 
     authority_regex = "^Authority_Code_(?<table>.*?)_psv.psv$"
     state_regex = "^[^_]*_(?<table>.*?)_psv.psv$"
 
-    print("Indexing Authority Code data...")
-    authority_folder = local_folder / "G-NAF FEBRUARY 2025/Authority Code"
-    # index_files(data_authority_dir, authority_regex)
+    print("\nIndexing Authority Code data...")
+
+    # Use regex to find folder that starts with "G-NAF" the name of this folder can change
+    # It includes the month and year of the release
+
+    data_folder = (local_folder / "G-NAF")
+    data_folder = list(data_folder.rglob("G-NAF*"))[0]
+    print(list(data_folder.iterdir()))
+
+    index_files(data_folder, authority_regex)
 
 
 if __name__ == "__main__":
